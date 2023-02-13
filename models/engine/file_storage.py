@@ -46,8 +46,9 @@ class FileStorage:
         try:
             # for each line deserialize and add to __objects dict
             with open(self.__file_path, 'r') as f:
-                instances = json.load(f)
+                j_obj = json.load(f)
             for key in instances:
-                self.__objects[key] = classes[instances[key]['__class__']]{**instances[key])
-        except:
+                self.__objects[key] = classes[j_obj
+                                              [key]['__class__']]{**j_obj[key])
+        except FileNotFoundError:
             pass
