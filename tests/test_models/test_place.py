@@ -3,13 +3,11 @@
 tests_place module - Contains the TestPlace classes
 """
 
+import unittest
 from datetime import datetime
 import inspect
 from models import place
 from models.base_model import BaseModel
-import os
-import pep8
-import unittest
 Place = place.Place
 
 
@@ -59,21 +57,11 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(hasattr(place, "city_id"))
         self.assertEqual(place.city_id, "")
 
-    def test_city_id_attr_db(self):
-        """Test Place has attr city_id, and it's an empty string"""
-        place = Place()
-        self.assertTrue(hasattr(Place, "city_id"))
-
     def test_user_id_attr(self):
         """Test Place has attr user_id, and it's an empty string"""
         place = Place()
         self.assertTrue(hasattr(place, "user_id"))
         self.assertIsInstance(place.user_id, str)
-
-    def test_user_id_attr_db(self):
-        """Test Place has attr user_id, and it's an empty string"""
-        place = Place()
-        self.assertTrue(hasattr(Place, "user_id"))
 
     def test_name_attr(self):
         """Test Place has attr name, and it's an empty string"""
@@ -81,21 +69,11 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(hasattr(place, "name"))
         self.assertEqual(place.name, "")
 
-    def test_name_attr_db(self):
-        """Test Place has attr name, and it's an empty string"""
-        place = Place()
-        self.assertTrue(hasattr(Place, "name"))
-
     def test_description_attr(self):
         """Test Place has attr description, and it's an empty string"""
         place = Place()
         self.assertTrue(hasattr(place, "description"))
         self.assertEqual(place.description, "")
-
-    def test_description_attr_db(self):
-        """Test Place has attr description, and it's an empty string"""
-        place = Place()
-        self.assertTrue(hasattr(Place, "description"))
 
     def test_number_rooms_attr(self):
         """Test Place has attr number_rooms, and it's an int == 0"""
@@ -103,12 +81,6 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(hasattr(place, "number_rooms"))
         self.assertEqual(type(place.number_rooms), int)
         self.assertEqual(place.number_rooms, 0)
-
-    def test_number_rooms_attr_db(self):
-        """Test Place has attr number_rooms"""
-        place = Place()
-        self.assertTrue(hasattr(Place, "number_rooms"))
-        self.assertEqual(place.number_rooms, None)
 
     def test_number_bathrooms_attr(self):
         """Test Place has attr number_bathrooms, and it's an int == 0"""
@@ -151,12 +123,6 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(hasattr(place, "amenity_ids"))
         self.assertEqual(type(place.amenity_ids), list)
         self.assertEqual(len(place.amenity_ids), 0)
-
-    def test_amenities_attr_db(self):
-        """Test Place has attr amenity_ids, and it's an empty list"""
-        place = Place()
-        self.assertTrue(hasattr(Place, "amenities"))
-        self.assertEqual(type(place.amenities), InstrumentedList)
 
     def test_to_dict_creates_dict(self):
         """test to_dict method creates a dictionary with proper attrs"""

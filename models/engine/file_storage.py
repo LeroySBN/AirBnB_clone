@@ -3,6 +3,13 @@
 defines the FileStorage class
 """
 import json
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.review import Review
 
 classes = {
     "BaseModel": BaseModel,
@@ -44,11 +51,20 @@ class FileStorage:
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
-            # for each line deserialize and add to __objects dict
-            with open(self.__file_path, 'r') as f:
-                j_obj = json.load(f)
-            for key in instances:
-                self.__objects[key] = classes[j_obj
-                                              [key]['__class__']]{**j_obj[key])
+            with open(self.__file_path, encoding="utf-8") as f:
+                for obj in json.load(f).values():
+                    self.new(eval(obj["__class__"])(**obj))
         except FileNotFoundError:
-            pass
+            return
+
+    def classes(self):
+        """Returns alist of classes"""
+        classes = {
+                "BaseModel": BaseModel,
+                "User": User,
+                "Place": Place,
+                "Amenity": Amenity,
+                "City": City,
+                "Review": Review
+                }
+        return classes

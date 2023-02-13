@@ -11,7 +11,7 @@ time = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 class BaseModel:
-
+    """Super class from which other instances will be derived from"""
     def __init__(self, *args, **kwargs):
         """instance method for initializing new objects"""
         if kwargs:

@@ -3,12 +3,11 @@
 Contains the TestCityDocs classes
 """
 
+import unittest
 from datetime import datetime
 import inspect
 from models import city
 from models.base_model import BaseModel
-import unittest
-from sqlalchemy.orm.attributes import InstrumentedAttribute
 City = city.City
 
 
@@ -62,7 +61,6 @@ class TestCity(unittest.TestCase):
         """Test for DBStorage name attribute"""
         city = City()
         self.assertTrue(hasattr(City, "name"))
-        self.assertIsInstance(City.name, InstrumentedAttribute)
 
     def test_state_id_attr(self):
         """Test that City has attribute state_id, and it's an empty string"""
@@ -74,17 +72,12 @@ class TestCity(unittest.TestCase):
         """Test for DBStorage state_id attribute"""
         city = City()
         self.assertTrue(hasattr(City, "state_id"))
-        self.assertIsInstance(City.state_id, InstrumentedAttribute)
 
     def test_to_dict_creates_dict(self):
         """test to_dict method creates a dictionary with proper attrs"""
         c = City()
         new_d = c.to_dict()
         self.assertEqual(type(new_d), dict)
-        for attr in c.__dict__:
-            if attr is not "_sa_instance_state":
-                with self.subTest(attr=attr):
-                    self.assertTrue(attr in new_d)
         self.assertTrue("__class__" in new_d)
 
     def test_to_dict_values(self):

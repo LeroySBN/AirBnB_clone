@@ -3,6 +3,7 @@
 Contains the TestAmenity class
 """
 import unittest
+import inspect
 from models.base_model import BaseModel
 from models import amenity
 from models.amenity import Amenity
@@ -24,7 +25,7 @@ class TestAmenity(unittest.TestCase):
         """test to_dict method creates a dictionary with proper attrs"""
         amenity = Amenity()
         new_dict = amenity.to_dict()
-        self.AssertEqual(type(new_dict), dict)
+        self.assertIsInstance(new_dict, dict)
         self.assertTrue("__class__" in new_dict)
 
     def test_to_dict_values(self):
