@@ -31,13 +31,13 @@ class TestAmenity(unittest.TestCase):
     def test_to_dict_values(self):
         """test that values in dict returned from to_dict are correct"""
         time_format = "%Y-%m-%dT%H:%M:%S.%f"
-        amenity = Amenity()
-        new_dict = amenity.to_dict()
-        self.assertEqual(new_dict["__class__"], "Amenity")
-        self.assertEqual(type(new_dict["created_at"]), str)
-        self.assertEqual(type(new_dict["updated_at"]), str)
-        self.assertEqual(new_dict["created_at"], amenity.created_at.strftime(time_format))
-        self.assertEqual(new_dict["updated_at"], amenity.updated_at.strftime(time_format))
+        a = Amenity()
+        n_d = amenity.to_dict()
+        self.assertEqual(n_d["__class__"], "Amenity")
+        self.assertEqual(type(n_d["created_at"]), str)
+        self.assertEqual(type(n_d["updated_at"]), str)
+        self.assertEqual(n_d["created_at"], a.created_at.strftime(time_format))
+        self.assertEqual(n_d["updated_at"], a.updated_at.strftime(time_format))
 
     def test_str(self):
         """test that the str method has the correct output"""
@@ -49,6 +49,7 @@ class TestAmenity(unittest.TestCase):
         """test that id is str"""
         inst_n = Amenity()
         self.assertIs(type(inst_n.id), str)
+
 
 class TestAmenityDocs(unittest.TestCase):
     """Tests to check the documentation and style of Amenity class"""
