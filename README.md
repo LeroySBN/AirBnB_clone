@@ -1,5 +1,4 @@
-# The AirBnB clone project
-# NB: This is an ongoing project
+# The AirBnB clone project (ongoing)
 
 ## Tech Stack
 Python
