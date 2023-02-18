@@ -15,9 +15,23 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """instance method for initializing new objects"""
         if kwargs:
-            self.__dict__ = kwargs['__dict__']
-            self.created_at = datetime.fromisoformat(kwargs['created_at'])
-            self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    setattr(self, key, value)
+            if kwargs.get("created_at", None) and type(self.created_at) is str:
+                self.created_at = datetime.strptime(kwargs["created_at"], time)
+            else:
+                self.created_at = datetime.utcnow()
+            if kwargs.get("updated_at", None) and type(self.updated_at) is str:
+                self.updated_at = datetime.strptime(kwargs["updated_at"], time)
+            else:
+                self.updated_at = datetime.utcnow()
+            if kwargs.get("id", None) is None:
+                self.id = str(uuid.uuid4())
+
+            #self.__dict__ = kwargs['__dict__']
+            #self.created_at = datetime.fromisoformat(kwargs['created_at'])
+            #self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
@@ -25,7 +39,7 @@ class BaseModel:
 
     def __str__(self):
         """Returns string representation of an object"""
-        return "[{0:s}] ({1:s}) {2}".format(self.__class__.__name__,
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__,
                                             self.id, self.__dict__)
 
     def save(self):
@@ -39,8 +53,8 @@ class BaseModel:
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
         if 'created_at' in obj_dict:
-            obj_dict['created_at'] = datetime.isoformat(obj_dict['created_at'])
-            # obj_dict['created_at'] = obj_dict['created_at'].strftime(time)
+            #obj_dict['created_at'] = datetime.isoformat(obj_dict['created_at'])
+            obj_dict['created_at'] = obj_dict['created_at'].strftime(time)
         if 'updated_at' in obj_dict:
             obj_dict['updated_at'] = obj_dict['updated_at'].strftime(time)
         return obj_dict
