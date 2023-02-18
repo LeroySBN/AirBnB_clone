@@ -24,14 +24,17 @@ classes = {
 
 class FileStorage:
     """serializes instances to a JSON file & deserializes back to instances"""
-
-    # path to JSON file
     __file_path = 'file.json'
-    # storage for all objects
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """returns the dictionary __objects"""
+        if cls is not None:
+            new_dict = {}
+            for key, value in self.__objects.items():
+                if cls == value.__class__ or cls == value.__class__.__name__:
+                    new_dict[key] = value
+            return new_dict
         return self.__objects
 
     def new(self, obj):
@@ -51,20 +54,9 @@ class FileStorage:
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, encoding="utf-8") as f:
-                for obj in json.load(f).values():
-                    self.new(eval(obj["__class__"])(**obj))
+            with open(self.__file_path, 'r') as f:
+                jo = json.load(f)
+            for key in jo:
+                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except FileNotFoundError:
             return
-
-    def classes(self):
-        """Returns alist of classes"""
-        classes = {
-                "BaseModel": BaseModel,
-                "User": User,
-                "Place": Place,
-                "Amenity": Amenity,
-                "City": City,
-                "Review": Review
-                }
-        return classes
