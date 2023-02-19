@@ -8,7 +8,7 @@
 
 **Data diagram**
 
-![airbnb-dd](./dd.png)
+![airbnb-dd](./dd.jpg)
 
 ***
 
