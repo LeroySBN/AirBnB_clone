@@ -185,3 +185,15 @@
     font-size: 12px;
     text-align: left;
 }
+
+@media screen and (max-width: 680px) {
+    .places article {
+        width: 100%;
+        flex-direction: column;
+    }
+    .price_by_night {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+}
