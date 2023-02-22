@@ -29,6 +29,7 @@ class BaseModel:
             if kwargs.get("id", None) is None:
                 self.id = str(uuid.uuid4())
 
+            # Alternative method for time conversion
             #self.__dict__ = kwargs['__dict__']
             #self.created_at = datetime.fromisoformat(kwargs['created_at'])
             #self.updated_at = datetime.fromisoformat(kwargs['updated_at'])

@@ -6,7 +6,6 @@ console module
 
 import cmd
 import models
-import shlex  # for splitting the line along spaces except in double quotes
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -80,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
-        args = shlex.split(arg)
+        args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
             return False
@@ -98,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """Deletes an instance"""
-        args = shlex.split(arg)
+        args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] in classes:
@@ -116,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Prints all string representation of all instances"""
-        args = shlex.split(arg)
+        args = arg.split()
         obj_list = []
         if len(args) == 0:
             obj_dict = models.storage.all()
@@ -133,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Updates an instance"""
-        args = shlex.split(arg)
+        args = arg.split()
         integers = ["number_rooms", "number_bathrooms", "max_guest",
                     "price_by_night"]
         floats = ["latitude", "longitude"]
