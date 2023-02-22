@@ -23,6 +23,9 @@ classes = {
     "Place": Place,
     "Review": Review
     }
+class_list = []
+for key in classes:
+    class_list.append(key)
 
 
 class HBNBCommand(cmd.Cmd):
@@ -119,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             args = args.split()
-            if args[0] not in classes:
+            if args[0] not in class_list:
                 print("** class doesn't exist **")
             else:
                 print(storage.all())
