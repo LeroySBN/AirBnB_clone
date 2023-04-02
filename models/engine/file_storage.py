@@ -4,8 +4,6 @@ defines the FileStorage class
 """
 
 import json
-import os
-from datetime import datetime
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.user import User
