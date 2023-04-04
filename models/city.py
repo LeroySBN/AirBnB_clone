@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-Defines a City class
-"""
-
+"""Defines a City class"""
 from models.base_model import BaseModel
 
 

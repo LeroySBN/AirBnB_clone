@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-base_model module
-"""
-
+"""base_model module"""
 import uuid
 from datetime import datetime
 import models
@@ -14,39 +11,34 @@ class BaseModel:
     """Super class from which other instances will be derived from"""
     def __init__(self, *args, **kwargs):
         """instance method for initializing new objects"""
-        if kwargs is not None and kwargs != {}:
-            for key in kwargs:
-                if key == "created_at":
-                    self.__dict__["created_at"] = datetime.strptime(
-                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.__dict__["updated_at"] = datetime.strptime(
-                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                else:
-                    self.__dict__[key] = kwargs[key]
-        else:
+        if not kwargs:
+            from models import storage
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = self.created_at
-            models.storage.new(self)
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            storage.new(self)
+        else:
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], time)
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'], time)
+            del kwargs['__class__']
+            self.__dict__.update(kwargs)
 
     def __str__(self):
-        """Returns string representation of an object"""
-        return "[{:s}] ({:s}) {}".format(self.__class__.__name__,
-                                            self.id, self.__dict__)
+        """Returns string representation of an instance"""
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """update the public instance attribute updated_at"""
-        self.updated_at = datetime.utcnow()
+        """Updates updated_at with current time when instance is changed"""
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
         """dictionary representation of object"""
-        obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = type(self).__self__
-        if 'created_at' in obj_dict:
-            #obj_dict['created_at'] = datetime.isoformat(obj_dict['created_at'])
-            obj_dict['created_at'] = obj_dict['created_at'].strftime(time)
-        if 'updated_at' in obj_dict:
-            obj_dict['updated_at'] = obj_dict['updated_at'].strftime(time)
-        return obj_dict
+        dictionary = {}
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary['created_at'] = self.created_at.isoformat()
+        dictionary['updated_at'] = self.updated_at.isoformat()
+        return dictionary

@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-defines the FileStorage class
-"""
-
+"""defines the FileStorage class"""
 import json
 from models.base_model import BaseModel
 from models.amenity import Amenity

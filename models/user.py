@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-defines a User class
-"""
+"""User module"""
 from models.base_model import BaseModel
 
 
