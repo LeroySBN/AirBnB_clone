@@ -1,55 +1,108 @@
 #!/usr/bin/python3
-"""defines the FileStorage class"""
+"""
+This module defines a class to manage file storage for hbnb clone
+"""
 import json
+import models
 from models.base_model import BaseModel
-from models.amenity import Amenity
 from models.user import User
+from models.place import Place
 from models.state import State
 from models.city import City
-from models.place import Place
+from models.amenity import Amenity
 from models.review import Review
+
+classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
 
 
 class FileStorage:
-    """serializes instances to a JSON file & deserializes back to instances"""
+    """
+    This class manages storage of hbnb models in JSON format
+    """
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """returns the dictionary __objects"""
+    def all(self, cls=None):
+        """
+        Returns a dictionary of models currently in storage
+        """
+        if cls is not None:
+            dict = {}
+            for key, value in self.__objects.items():
+                if cls == value.__class__ or cls == value.__class__.__name__:
+                    dict[key] = value
+            return dict
         return self.__objects
 
     def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
+        """
+        Adds new object to storage dictionary
+        """
+        # self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
-        """serializes __objects to the JSON file"""
-        with open(self.__file_path, mode="w") as f:
-            dict_storage = {}
-            for k, v in self.__objects.items():
-                dict_storage[k] = v.to_dict()
-            json.dump(dict_storage, f)
+        """
+        Saves storage dictionary to file
+        """
+        with open(FileStorage.__file_path, 'w') as f:
+            temp = {}
+            temp.update(FileStorage.__objects)
+            for key, val in temp.items():
+                temp[key] = val.to_dict()
+            json.dump(temp, f)
 
     def reload(self):
-        """deserializes the JSON file to __objects"""
+        """
+        Loads storage dictionary from file
+        """
         try:
-            with open(self.__file_path, encoding="utf-8") as f:
-                for obj in json.load(f).values():
-                    self.new(eval(obj["__class__"])(**obj))
+            temp = {}
+            with open(FileStorage.__file_path, 'r') as f:
+                temp = json.load(f)
+                for key, val in temp.items():
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
-            return
+            pass
 
-    def classes(self):
+    def delete(self, obj=None):
         """
-        Returns alist of classes
+        Deletes obj if in __objects
         """
-        classes = {
-                "BaseModel": BaseModel,
-                "User": User,
-                "Place": Place,
-                "Amenity": Amenity,
-                "City": City,
-                "Review": Review
-                }
-        return classes
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except (AttributeError, KeyError):
+            pass
+
+    def get(self, cls, id):
+        """
+        Retrieves one object
+        """
+        if cls not in classes.values():
+            return None
+        objs = models.storage.all(cls)
+        for value in objs.values():
+            if value.id == id:
+                return value
+
+    def count(self, cls=None):
+        """
+        Counts the number of objects in storage
+        """
+        if not cls:
+            count = 0
+            for clas in classes.values():
+                count += len(models.storage.all(clas).values())
+        else:
+            count = len(models.storage.all(cls).values())
+        return count
+
+    def close(self):
+        """
+        Deserializing the JSON file to objects
+        """
+        self.reload()
