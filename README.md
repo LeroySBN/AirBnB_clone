@@ -1,6 +1,6 @@
 # The AirBnB clone project (ongoing)
 
-**Tech Stack: Python, Flask, HTML5, CSS3, MYSQL, jQuery, Puppet, HAproxy, NGINX**
+**Tech Stack: Python, Flask, HTML5, CSS3, MYSQL, jQuery, Puppet, HAproxy, NGINX, DataDog**
 
 ![airbnb](./wd.png)
 
