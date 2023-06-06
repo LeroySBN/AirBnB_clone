@@ -15,6 +15,7 @@ function install() {
 	#shellcheck disable=SC2181
 	if [ $? -ne 0 ]; then
 		echo -e "Installing: ${yellow}$1${reset}\n"
+		sudo apt-get update -y
 		sudo apt-get install -y "$1" -qq
 		echo -e "\n"
 	else
@@ -67,7 +68,22 @@ server {
                 alias /data/web_static/current/;
         }
 
+		# nginx should serve up static files and never send to the WSGI server
+  		#location /static {
+    	#		 autoindex on;
+    	#		 alias /srv/www/assets;
+  		#}
+
+		location /redirect_me {
+        		 return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+		}
+
 		error_page 404 /404.html;
+		location /404 {
+				 root /var/www/html;
+				 internal;
+		}
+
 		error_page 500 502 503 504 /50x.html;
 }"
 bash -c "echo -e '$SERVER_CONFIG' | sudo tee '/etc/nginx/sites-available/default' > /dev/null"
