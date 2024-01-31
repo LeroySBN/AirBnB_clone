@@ -2,13 +2,15 @@
 
 **Tech Stack: Python, Flask, HTML5, CSS3, MYSQL, jQuery, Puppet, HAproxy, NGINX, DataDog**
 
-![airbnb](./wd.png)
+![airbnb](./diagrams/wd.png)
+
+![monitoring](./diagrams/architecture.png)
 
 ***
 
 **Data diagram**
 
-![airbnb-dd](./dd.jpg)
+![airbnb-dd](./diagrams/data_diagram.jpg)
 
 ***
 

@@ -45,9 +45,16 @@ defaults
     option  forwardfor
     option  httplog
     option  dontlognull
-    timeout connect  5000
-    timeout client  10000
-    timeout server  10000
+    timeout client  60s
+    timeout connect  10s
+    timeout server  10s
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
     retries 3
     option  redispatch
     option  http-server-close
@@ -60,17 +67,17 @@ frontend www-http
 
 
 frontend www-https
-   bind   *:443 ssl crt /etc/letsencrypt/live/www.alphaziro.tech/fullchain.pem
+   bind   *:443 ssl crt /home/ubuntu/haproxy.pem alpn h2,http/1.1
    reqadd X-Forwarded-Proto:\ https
    acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
    use_backend letsencrypt-backend if letsencrypt-acl
-   default_backend www-backend
+   default_backend www-https
 
-backend www-backend
+backend www-https
    balance  roundrobin
    redirect scheme https if !{ ssl_fc }
-   server 100910-web-01 35.175.64.27:80 check
-   server 100910-web-02 52.3.220.182:80 check
+   server 100910-web-01 100.27.4.231:80 check
+   server 100910-web-02 100.25.222.242:80 check
 
 backend letsencrypt-backend
    server letsencrypt 127.0.0.1:71417
@@ -96,6 +103,8 @@ sudo ufw reload
 echo -e "${green}Finished updating firewall${reset}\n"
 
 sudo certbot --nginx -d alphaziro.tech -d www.alphaziro.tech
+
+sudo cat /etc/letsencrypt/live/alphaziro.tech/fullchain.pem /etc/letsencrypt/live/alphaziro.tech/privkey.pem | sudo tee '/etc/letsencrypt/live/alphaziro.tech/haproxy.pem' > /dev/null
 
 # test the renewal process
 sudo certbot renew --dry-run
