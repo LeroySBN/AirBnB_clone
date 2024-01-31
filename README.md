@@ -1,6 +1,8 @@
-# The AirBnB clone project (ongoing)
+# The AirBnB clone project
 
+```
 **Tech Stack: Python, Flask, HTML5, CSS3, MYSQL, jQuery, Puppet, HAproxy, NGINX, DataDog**
+```
 
 ![airbnb](./diagrams/wd.png)
 
