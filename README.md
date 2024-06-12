@@ -1,5 +1,7 @@
 # The AirBnB clone project
 
+In this project, we implement an Airbnb clone architecture, incorporating advanced strategies including Master-Slave Database Replication and the round-robin load balancing algorithm. The primary objective, mitigate SinglePoint of Failure (SPOF) occurrences while optimizing system performance. Additionally, we facilitated direct access to the server console enabling admins to execute CRUD operations on object instances thus enhancing system manageability and flexibility.
+
 ![airbnb](./diagrams/wd.png)
 
 ![monitoring](./diagrams/architecture.png)
